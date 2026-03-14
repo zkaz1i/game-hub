@@ -10,6 +10,8 @@
             background-image:url("/static/sbg.jpg");
             background-size: cover;
             background-position:center;
+            background-repeat:no-repeat;
+            background-attachment:fixed;
             font-family: 'orbitron',sans-serif;
         }
         #player{
@@ -61,7 +63,7 @@
     <div id="startText">GAME START</div>
     <div id="gameOver">Game Over! Play again?</div>
 
-    <button onclick="backBtn" onclick="location.href='/'">Back</button>
+    <button id="backBtn" onclick="location.href='/'">Back</button>
     <script>
         const player = document.getElementById("player")
         const startText = document.getElementById("startText")
@@ -115,6 +117,18 @@
 
             player.style.left = (e.clientX-25) + "px"
             player.style.top = (e.clientY-25) + "px"
+
+        })
+
+        document.addEventListener("touchmove", function(e){
+
+            e.preventDefault()
+
+            const touch = e.touches[0]
+
+            player.style.left = (touch.clientX - 25) + "px"
+            player.style.top = (touch.clientY - 25) + "px"
+
         })
 
         function update(){
@@ -126,7 +140,7 @@
 
                 let dx=playerX-s.x
                 let dy=playerY-s.y
-                let distance=Math.sqrt(dx*dx+dy*dy)
+                let distance=Math.sqrt(dx*dx+dy*dy) || 1
 
                 dx/=distance
                 dy/=distance
