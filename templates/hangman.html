@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>Hangman</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
+
+<style>
+
+body{
+    margin:0;
+    min-height:100vh;
+
+    font-family:'Orbitron',sans-serif;
+    color:white;
+
+    background-image:url("/static/hbg.jpg");
+    background-size:cover;
+    background-position:center;
+    background-repeat:no-repeat;
+
+    display:flex;
+}
+
+/* LEFT SIDE DRAWING */
+
+.hangmanArea{
+    width:35%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+/* RIGHT SIDE GAME */
+
+.gameArea{
+    width:65%;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+}
+
+h1{
+    margin-top:12vh;
+    font-size:clamp(36px,6vw,50px);
+}
+
+.subtitle{
+    margin-top:10px;
+    font-size:18px;
+}
+
+.word{
+    margin-top:40px;
+    font-size:clamp(28px,5vw,40px);
+    letter-spacing:10px;
+}
+
+/* input bar */
+
+.inputBox{
+
+    margin-top:40px;
+
+    background:white;
+    border-radius:40px;
+
+    width:min(350px,85vw);
+    height:55px;
+
+    display:flex;
+    align-items:center;
+
+    padding-left:15px;
+}
+
+.inputBox input{
+
+    border:none;
+    outline:none;
+
+    font-size:22px;
+    width:80%;
+}
+
+.inputBox button{
+
+    width:60px;
+    height:40px;
+
+    border:none;
+    border-radius:12px;
+
+    cursor:pointer;
+
+    background:linear-gradient(135deg,#000,#7a00ff);
+
+    color:white;
+    font-size:22px;
+
+    margin-left:auto;
+    margin-right:8px;
+}
+
+/* info text */
+
+.info{
+    margin-top:30px;
+    font-size:18px;
+}
+
+.message{
+    margin-top:30px;
+    font-size:26px;
+}
+
+/* bottom menu */
+
+.menu{
+    margin-top:auto;
+    margin-bottom:30px;
+}
+
+.menu button{
+    font-family:'Orbitron',sans-serif;
+    padding:10px 20px;
+    font-size:18px;
+    cursor:pointer;
+}
+
+line, circle{
+stroke:white;
+stroke-width:4;
+fill:none;
+}
+
+/* ---------- MOBILE LAYOUT ---------- */
+
+@media (max-width: 900px){
+
+    body{
+        flex-direction:column;
+        align-items:center;
+        text-align:center;
+    }
+
+    .hangmanArea{
+        width:100%;
+        margin-top:30px;
+    }
+
+    .gameArea{
+        width:100%;
+        padding:0 20px;
+    }
+
+    h1{
+        margin-top:20px;
+    }
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<!-- LEFT SIDE HANGMAN DRAWING -->
+
+<div class="hangmanArea">
+
+<svg width="250" height="400">
+
+<!-- gallows -->
+
+<line x1="10" y1="380" x2="200" y2="380"/>
+<line x1="60" y1="380" x2="60" y2="40"/>
+<line x1="60" y1="40" x2="160" y2="40"/>
+<line x1="160" y1="40" x2="160" y2="80"/>
+
+<!-- body parts -->
+
+{% if wrong_guesses >= 1 %}
+<circle cx="160" cy="110" r="30"/>
+{% endif %}
+
+{% if wrong_guesses >= 2 %}
+<line x1="160" y1="140" x2="160" y2="230"/>
+{% endif %}
+
+{% if wrong_guesses >= 3 %}
+<line x1="160" y1="170" x2="120" y2="200"/>
+{% endif %}
+
+{% if wrong_guesses >= 4 %}
+<line x1="160" y1="170" x2="200" y2="200"/>
+{% endif %}
+
+{% if wrong_guesses >= 5 %}
+<line x1="160" y1="230" x2="120" y2="280"/>
+{% endif %}
+
+{% if wrong_guesses >= 6 %}
+<line x1="160" y1="230" x2="200" y2="280"/>
+{% endif %}
+
+</svg>
+
+</div>
+
+<!-- RIGHT SIDE GAME -->
+
+<div class="gameArea">
+
+<h1>Hangman</h1>
+
+<div class="subtitle">
+Use Capital Letters
+</div>
+
+<div class="word">
+{{ display_word }}
+</div>
+
+{% if message %}
+
+<div class="message">
+{{ message }}
+</div>
+
+<button onclick="location.href='/hangman'">Play Again</button>
+
+{% else %}
+
+<form method="POST">
+
+<div class="inputBox">
+
+<input type="text" name="letter" maxlength="1" placeholder="Enter letter..." required>
+
+<button type="submit">➜</button>
+
+</div>
+
+</form>
+
+{% endif %}
+
+<div class="info">
+Wrong guesses: {{ wrong_guesses }} / 6
+</div>
+
+<div class="info">
+Guessed letters: {{ guessed_letters|join(', ') }}
+</div>
+
+<div class="menu">
+<button onclick="location.href='/'">Back to Menu</button>
+</div>
+
+</div>
+
+</body>
+</html>

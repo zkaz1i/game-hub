@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Tag Game! Avoid getting caught!</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-image:url("/static/sbg.jpg");
+            background-size: cover;
+            background-position:center;
+            font-family: 'orbitron',sans-serif;
+        }
+        #player{
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            background: #CFFF04;
+            border-radius:50%;
+        }
+        .scorpion {
+            position:absolute;
+            width:0;
+            height:0;
+
+            border-left:20px solid transparent;
+            border-right:20px solid transparent;
+            border-bottom:40px solid rgba(114, 198, 232, 0.9);
+
+            filter:drop-shadow(0 0 8px red)
+        }
+
+        #startText, #gameOver{
+            position:fixed;
+            top:40%;
+            left:50%;
+            transform:translate(-50%,-50%);
+
+            color: black;
+            font-size:70px;
+            text-align:center;
+
+            text-shadow:0 0 15px cyan,0 0 40px cyan;
+        }
+
+        #gameOver{
+            display:none;
+        }
+
+        #backBtn{
+            position:fixed;
+            top:10px;
+            left:10px;
+            font-family:'Orbitron', sans-serif;
+        }
+    </style>
+</head>
+<body>
+    <div id="player"></div>
+    <div id="startText">GAME START</div>
+    <div id="gameOver">Game Over! Play again?</div>
+
+    <button onclick="backBtn" onclick="location.href='/'">Back</button>
+    <script>
+        const player = document.getElementById("player")
+        const startText = document.getElementById("startText")
+        const gameOverText = document.getElementById("gameOver")
+
+        player.style.left = "300px"
+        player.style.top = "300px"
+
+        let scorpions = []
+        let gameLoop
+        let spawnLoop
+
+        function spawnScorpion(){
+
+            const  s = document.createElement("div")
+            s.classList.add("scorpion")
+
+            let side = Math.floor(Math.random()*4)
+
+            let x,y
+
+            if(side===0){x=0;y=Math.random()*window.innerHeight}
+            if(side===1){x=window.innerWidth;y=Math.random()*window.innerHeight}
+            if(side===2){x=Math.random()*window.innerWidth;y=0}
+            if(side===3){x=Math.random()*window.innerWidth;y=window.innerHeight}
+
+            s.style.left = x + "px"
+            s.style.top = y+ "px"
+
+            document.body.appendChild(s)
+
+            scorpions.push({
+                element:s,
+                x:x,
+                y:y,
+                speed:0.04,
+                wiggle:Math.random()*100
+            })
+        }
+
+        setTimeout(startGame,3000)
+
+        function startGame(){
+            startText.style.display="none"
+            spawnScorpion()
+            spawnLoop=setInterval(spawnScorpion,10000)
+            gameLoop=setInterval(update,20)
+        }
+
+        document.addEventListener("mousemove",function(e){
+
+            player.style.left = (e.clientX-25) + "px"
+            player.style.top = (e.clientY-25) + "px"
+        })
+
+        function update(){
+
+            const playerX=parseInt(player.style.left)
+            const playerY=parseInt(player.style.top)
+
+            scorpions.forEach(s=>{
+
+                let dx=playerX-s.x
+                let dy=playerY-s.y
+                let distance=Math.sqrt(dx*dx+dy*dy)
+
+                dx/=distance
+                dy/=distance
+
+                s.wiggle+=0.2
+                let wiggleOffset=Math.sin(s.wiggle)*2
+
+                s.x+=dx*s.speed*20 + wiggleOffset
+                s.y+=dy*s.speed*20 + wiggleOffset
+
+                s.speed+=0.0001
+
+                s.element.style.left=s.x+"px"
+                s.element.style.top=s.y+"px"
+
+                let angle=Math.atan2(dy,dx)*180/Math.PI
+                s.element.style.transform="rotate("+(angle+90)+"deg)"
+
+                if(Math.abs(playerX-s.x)<40 && Math.abs(playerY-s.y)<40){
+                    gameOverText.style.display="block"
+                    clearInterval(gameLoop)
+                    clearInterval(spawnLoop)
+                }
+            })
+        }
+    </script>
+</body>
+</html>
