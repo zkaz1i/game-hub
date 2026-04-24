@@ -23,48 +23,39 @@ body{
     background-repeat:no-repeat;
 
     display:flex;
-}
-
-/* LEFT SIDE DRAWING */
-
-.hangmanArea{
-    width:35%;
-    display:flex;
     justify-content:center;
     align-items:center;
+    text-align:center;
 }
 
-/* RIGHT SIDE GAME */
-
+/* MAIN GAME BOX */
 .gameArea{
-    width:65%;
     display:flex;
     flex-direction:column;
     align-items:center;
+    justify-content:center;
 }
 
+/* TITLE */
 h1{
-    margin-top:12vh;
     font-size:clamp(36px,6vw,50px);
+    margin-bottom:10px;
 }
 
 .subtitle{
-    margin-top:10px;
     font-size:18px;
+    margin-bottom:30px;
 }
 
+/* WORD DISPLAY */
 .word{
-    margin-top:40px;
     font-size:clamp(28px,5vw,40px);
     letter-spacing:10px;
+    margin-bottom:30px;
 }
 
-/* input bar */
-
+/* INPUT BOX */
 .inputBox{
-
-    margin-top:40px;
-
     background:white;
     border-radius:40px;
 
@@ -75,10 +66,10 @@ h1{
     align-items:center;
 
     padding-left:15px;
+    margin-bottom:20px;
 }
 
 .inputBox input{
-
     border:none;
     outline:none;
 
@@ -87,7 +78,6 @@ h1{
 }
 
 .inputBox button{
-
     width:60px;
     height:40px;
 
@@ -97,7 +87,6 @@ h1{
     cursor:pointer;
 
     background:linear-gradient(135deg,#000,#7a00ff);
-
     color:white;
     font-size:22px;
 
@@ -105,23 +94,20 @@ h1{
     margin-right:8px;
 }
 
-/* info text */
-
+/* TEXT INFO */
 .info{
-    margin-top:30px;
+    margin-top:10px;
     font-size:18px;
 }
 
 .message{
-    margin-top:30px;
+    margin-top:20px;
     font-size:26px;
 }
 
-/* bottom menu */
-
+/* MENU */
 .menu{
-    margin-top:auto;
-    margin-bottom:30px;
+    margin-top:30px;
 }
 
 .menu button{
@@ -131,136 +117,59 @@ h1{
     cursor:pointer;
 }
 
-line, circle{
-stroke:white;
-stroke-width:4;
-fill:none;
-}
-
-/* ---------- MOBILE LAYOUT ---------- */
-
-@media (max-width: 900px){
-
-    body{
-        flex-direction:column;
-        align-items:center;
-        text-align:center;
-    }
-
-    .hangmanArea{
-        width:100%;
-        margin-top:30px;
-    }
-
-    .gameArea{
-        width:100%;
-        padding:0 20px;
-    }
-
-    h1{
-        margin-top:20px;
-    }
-
-}
-
 </style>
 
 </head>
 
 <body>
 
-<!-- LEFT SIDE HANGMAN DRAWING -->
-
-<div class="hangmanArea">
-
-<svg width="250" height="400">
-
-<!-- gallows -->
-
-<line x1="10" y1="380" x2="200" y2="380"/>
-<line x1="60" y1="380" x2="60" y2="40"/>
-<line x1="60" y1="40" x2="160" y2="40"/>
-<line x1="160" y1="40" x2="160" y2="80"/>
-
-<!-- body parts -->
-
-{% if wrong_guesses >= 1 %}
-<circle cx="160" cy="110" r="30"/>
-{% endif %}
-
-{% if wrong_guesses >= 2 %}
-<line x1="160" y1="140" x2="160" y2="230"/>
-{% endif %}
-
-{% if wrong_guesses >= 3 %}
-<line x1="160" y1="170" x2="120" y2="200"/>
-{% endif %}
-
-{% if wrong_guesses >= 4 %}
-<line x1="160" y1="170" x2="200" y2="200"/>
-{% endif %}
-
-{% if wrong_guesses >= 5 %}
-<line x1="160" y1="230" x2="120" y2="280"/>
-{% endif %}
-
-{% if wrong_guesses >= 6 %}
-<line x1="160" y1="230" x2="200" y2="280"/>
-{% endif %}
-
-</svg>
-
-</div>
-
-<!-- RIGHT SIDE GAME -->
-
 <div class="gameArea">
 
-<h1>Hangman</h1>
+    <h1>Hangman</h1>
 
-<div class="subtitle">
-Use Capital Letters
-</div>
+    <div class="subtitle">
+        Use Capital Letters
+    </div>
 
-<div class="word">
-{{ display_word }}
-</div>
+    <div class="word">
+        {{ display_word }}
+    </div>
 
-{% if message %}
+    {% if message %}
 
-<div class="message">
-{{ message }}
-</div>
+        <div class="message">
+            {{ message }}
+        </div>
 
-<button onclick="location.href='/hangman'">Play Again</button>
+        <button onclick="location.href='/hangman'">Play Again</button>
 
-{% else %}
+    {% else %}
 
-<form method="POST">
+        <form method="POST">
 
-<div class="inputBox">
+            <div class="inputBox">
 
-<input type="text" name="letter" maxlength="1" placeholder="Enter letter..." required>
+                <input type="text" name="letter" maxlength="1" placeholder="Enter letter..." required>
 
-<button type="submit">➜</button>
+                <button type="submit">➜</button>
 
-</div>
+            </div>
 
-</form>
+        </form>
 
-{% endif %}
+    {% endif %}
 
-<div class="info">
-Wrong guesses: {{ wrong_guesses }} / 6
-</div>
+    <div class="info">
+        Wrong guesses: {{ wrong_guesses }} / 6
+    </div>
 
-<div class="info">
-Guessed letters: {{ guessed_letters|join(', ') }}
-</div>
+    <div class="info">
+        Guessed letters: {{ guessed_letters|join(', ') }}
+    </div>
 
-<div class="menu">
-<button onclick="location.href='/'">Back to Menu</button>
-</div>
+    <div class="menu">
+        <button onclick="location.href='/'">Back to Menu</button>
+    </div>
 
 </div>
 

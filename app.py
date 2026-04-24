@@ -69,7 +69,7 @@ def hangman():
     message = None
 
     if request.method == 'POST':
-        letter = request.form['letter'.lower()]
+        letter = request.form['letter'].upper()
         if letter not in guessed_letters:
             guessed_letters.append(letter)
             if letter not in word:
