@@ -52,13 +52,9 @@ def rps():
             result = f"You lose! You chose {user_choice} and the computer chose {computer_choice}. Play Again?"
     return render_template('rps.html', result=result)
 
-@app.route("/scorpion")
-def scorpion():
-    return render_template('scorpion.html')
-
 app.secret_key = 'sipersecretkey123'
 
-words_list = ['Python', 'FLASK', 'HANGMAN', 'SCORPION', 'GAME', 'RANDOM', 'GUESS', 'MOVIES', 'WORDLE', 'ANJUMAN', 'COMPUTER', 'PROGRAMMING', 'PROJECT', 'REQUEST', 'LOCKET', 'ISLAND', 'TELEVISION', 'RYZEN', 'FLASK', 'MODULE', 'MOBILE', 'LAPTOP', 'BEAUTIFUL', 'INVIGORATING', 'COWARD', 'PERFECTIONIST', 'MYRRH']
+words_list = ['PYTHON', 'FLASK', 'HANGMAN', 'GAME', 'RANDOM', 'GUESS', 'MOVIES', 'WORDLE', 'ANJUMAN', 'COMPUTER', 'PROGRAMMING', 'PROJECT', 'REQUEST', 'LOCKET', 'ISLAND', 'TELEVISION', 'RYZEN', 'FLASK', 'MODULE', 'MOBILE', 'LAPTOP', 'BEAUTIFUL', 'INVIGORATING', 'COWARD', 'PERFECTIONIST', 'MYRRH']
 
 @app.route('/hangman', methods=['GET', 'POST'])
 def hangman():
